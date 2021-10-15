@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.tumbaiorganizer.Model.Tarea
 import com.example.tumbaiorganizer.R
 import com.example.tumbaiorganizer.databinding.FragmentHomeBinding
+import com.example.tumbaiorganizer.ui.detailstarea.DetailsTareaFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,6 +49,18 @@ class HomeFragment : Fragment() {
             val arrayAdapter : ArrayAdapter<*>
             arrayAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,homeViewModel.listaTareas);
             lvTareas.adapter = arrayAdapter
+            
+            lvTareas.setOnItemClickListener { parent, view, position, index ->
+                val selectedTarea : Tarea = parent.getItemAtPosition(position) as Tarea
+                Toast.makeText(binding.root.context,selectedTarea.Actividad,Toast.LENGTH_SHORT).show()
+
+                val fragmentDetails = DetailsTareaFragment()
+                val manager = requireActivity().supportFragmentManager.beginTransaction()
+                manager.add(R.id.nav_host_fragment_content_main,fragmentDetails)
+                manager.addToBackStack(null)
+                manager.commit()
+
+            }
         }
 
         /*homeViewModel.text.observe(viewLifecycleOwner, Observer {
