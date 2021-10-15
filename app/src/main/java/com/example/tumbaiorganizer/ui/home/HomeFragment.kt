@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    private val tokenAPI by lazy {  activity?.intent?.getStringExtra("token")}
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,8 +69,26 @@ class HomeFragment : Fragment() {
             }
         }*/
 
-        var tokenAPI = activity?.intent?.getStringExtra("token")
-        val lblCantTareas: TextView = binding.lblCantTareas
+
+        showTareas()
+        binding.btnRefresh.setOnClickListener {
+            showTareas()
+        }
+
+
+
+        /*homeViewModel.text.observe(viewLifecycleOwner, Observer {
+            textView.text = it
+        })*/
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    fun showTareas() {
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
             .url("http://20.97.115.3/organizzdorapi/public/api/task")
@@ -80,14 +98,15 @@ class HomeFragment : Fragment() {
 
         okHttpClient.newCall(request).execute().use { response ->
             if (!response.isSuccessful) {
-               binding.lblTareasListJSON.text = "Ha ocurrido un problema con el servidor"
+                binding.lblTareasListJSON.text = "Ha ocurrido un problema con el servidor"
             } else {
                 binding.lblTareasListJSON.text = ""
+                homeViewModel.clearList()
                 //binding.lblTareasListJSON.text = response.body!!.string()
                 val json = JSONTokener(response.body!!.string())
                 val jsonArray = JSONArray(json)
                 //val array = json.getJSONArray("")
-                lblCantTareas.text = jsonArray.length().toString()
+                binding.lblCantTareas.text = jsonArray.length().toString()
                 //val json = JSONObject(response.body!!.string())
                 //Toast.makeText(this,json["message"].toString(),Toast.LENGTH_LONG).show()
                 var i = 0;
@@ -131,18 +150,5 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-
-
-
-        /*homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })*/
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

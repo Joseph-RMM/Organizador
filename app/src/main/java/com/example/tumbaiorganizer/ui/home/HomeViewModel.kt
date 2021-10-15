@@ -23,6 +23,10 @@ class HomeViewModel : ViewModel() {
         listaTareas.add(tarea)
     }
 
+    fun clearList() {
+        listaTareas.clear()
+    }
+
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"

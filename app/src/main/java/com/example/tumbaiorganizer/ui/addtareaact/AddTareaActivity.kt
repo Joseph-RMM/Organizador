@@ -43,7 +43,7 @@ class AddTareaActivity : AppCompatActivity() {
             StrictMode.setThreadPolicy(policy)
         }
 
-        Toast.makeText(this, tokenAPI+"", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, tokenAPI+"", Toast.LENGTH_SHORT).show()
 
         calendar.setOnDateChangeListener(OnDateChangeListener { view, year, month, day ->
             selectedDate  = "$year-${month+1}-$day";
@@ -66,8 +66,8 @@ class AddTareaActivity : AppCompatActivity() {
             )
 
 
-            //TODO: subir "newTarea" a la base de datos. Por ahora solo se muestra en toast
-            val toast = Toast.makeText(applicationContext, newTarea.getAPIDateFormat(), Toast.LENGTH_LONG).show()
+
+            //val toast = Toast.makeText(applicationContext, newTarea.getAPIDateFormat(), Toast.LENGTH_LONG).show()
             //toast.show()
             Log.d("TareaInfo",newTarea.Estatus.toString())
             //Hacer peticion a la API
@@ -93,6 +93,8 @@ class AddTareaActivity : AppCompatActivity() {
                     lblInfo.text = "Datos incorrectos o cuenta inexistente"
                 } else {
                     lblInfo.text = response.body!!.string()
+                    Toast.makeText(applicationContext,"Tarea Añadida!",Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
 
