@@ -15,8 +15,12 @@ class HomeViewModel : ViewModel() {
         //TODO: Get Tareas from API
     }
 
-    fun addTarea(Actividad : String, Fecha : Date) {
-        listaTareas.add(Tarea(2, Actividad, Fecha))
+    fun addTarea(Actividad : String, Descripcion : String, Fecha : Date, Estatus : Int, Prioridad : Int, Categoria : Int) {
+        listaTareas.add(Tarea(2, Actividad, Descripcion, Fecha,Estatus,Prioridad,Categoria))
+    }
+
+    fun addTarea(tarea: Tarea) {
+        listaTareas.add(tarea)
     }
 
 

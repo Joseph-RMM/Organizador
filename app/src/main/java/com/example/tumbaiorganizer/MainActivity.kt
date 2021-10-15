@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //    .setAction("Action", null).show()
             val intent = Intent(this, AddTareaActivity::class.java)
+                .putExtra("token",tokenAPI)
             startActivity(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
