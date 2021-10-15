@@ -6,12 +6,14 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Exception
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -40,35 +42,48 @@ class RegisterActivity : AppCompatActivity() {
             var Pass = txtPass.text.toString()
             var RepeatPass = txtRepeatPass.text.toString()
 
-            //Hacer peticion a la API
-            val okHttpClient = OkHttpClient()
-            //val mediaType = "application/json; charset=utf-8".toMediaType()
-            //val requestBody = "".toRequestBody()
 
-            /*
-            val formBody = FormBody.Builder()
-                .add("name",Username)
-                .add("email",Correo)
-                .add("password",Pass)
-                .add("password_confirmation",Pass)
-                .build()
+            if (Pass == RepeatPass) {
 
-            val request = Request.Builder()
-                .url("http://127.0.0.1:8000/api/register")
-                .post(formBody)
-                .build()
 
-            okHttpClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful){
-                    lblInfo.text ="Ha habido un problema con el servidor :c"
-                } else {
-                    lblInfo.text = response.body!!.string()
+                //Hacer peticion a la API
+                val okHttpClient = OkHttpClient()
+                //val mediaType = "application/json; charset=utf-8".toMediaType()
+                //val requestBody = "".toRequestBody()
 
-                    val json = JSONObject(response.body!!.string())
-                    lblInfo.text = json["id"].toString()
+
+                val formBody = FormBody.Builder()
+                    .add("name", Username)
+                    .add("email", Correo)
+                    .add("password", Pass)
+                    .add("password_confirmation", RepeatPass)
+                    .build()
+
+                val request = Request.Builder()
+                    .url("http://20.97.115.3/organizzdorapi/public/api/register")
+                    .post(formBody)
+                    .build()
+
+                okHttpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        lblInfo.text = "Ha habido un problema con el servidor :c"
+                    } else {
+                       // lblInfo.text = response.body!!.string()
+                       try {
+                           val json = JSONObject(response.body!!.string())
+                           lblInfo.text = json["token"].toString()
+                           Toast.makeText(this,"Tu cuenta ha sido creada",Toast.LENGTH_LONG).show()
+                           finish()
+                       } catch (e : Exception) {
+                           lblInfo.text = "Introduce una dirección de correo válida"
+                       }
+
+                    }
                 }
-            }*/
-
+            } else {
+                lblInfo.text = "Las contraseñas no coinciden"
+            }
+/*
             val client = OkHttpClient()
 
 
@@ -88,7 +103,7 @@ class RegisterActivity : AppCompatActivity() {
                 val json = JSONObject(response.body!!.string())
                 lblInfo.text = json["id"].toString()
             }
-
+*/
 
         }
 

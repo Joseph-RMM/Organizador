@@ -46,7 +46,7 @@
                     android:layout_marginBottom="13sp"
                     android:background="@drawable/bg_logintxt"
                     android:ems="10"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:paddingLeft="15sp"
                     android:paddingEnd="15sp"
                     android:textColor="#430370" />
