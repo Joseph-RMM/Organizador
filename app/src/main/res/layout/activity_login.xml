@@ -35,7 +35,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/txtCorreoLogin"
             android:layout_width="match_parent"
             android:layout_height="40sp"
             android:layout_marginBottom="13sp"
@@ -55,7 +55,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/txtPassLogin"
             android:layout_width="match_parent"
             android:layout_height="40sp"
             android:layout_marginBottom="13sp"
@@ -65,6 +65,15 @@
             android:paddingLeft="15sp"
             android:paddingEnd="15sp"
             android:textColor="#430370" />
+
+        <TextView
+            android:id="@+id/lblInfoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Info del login"
+            android:textAlignment="center"
+            android:textColor="#e7e6e8"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btnLogin"

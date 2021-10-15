@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_morado"
+    android:padding="55sp"
+    tools:context=".RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:text="Crear una cuenta"
+            android:textAlignment="center"
+            android:textColor="#e7e6e8"
+            android:textSize="34sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre de usuario:"
+                    android:textColor="#e7e6e8"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/txtUsuarioRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginBottom="13sp"
+                    android:background="@drawable/bg_logintxt"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="15sp"
+                    android:paddingEnd="15sp"
+                    android:textColor="#430370" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Correo:"
+                    android:textColor="#e7e6e8"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/txtCorreoRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginBottom="13sp"
+                    android:background="@drawable/bg_logintxt"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="15sp"
+                    android:paddingEnd="15sp"
+                    android:textColor="#430370" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Contraseña:"
+                    android:textColor="#e7e6e8"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/txtPassRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginBottom="13sp"
+                    android:background="@drawable/bg_logintxt"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:paddingLeft="15sp"
+                    android:paddingEnd="15sp"
+                    android:textColor="#430370" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Repetir contraseña:"
+                    android:textColor="#e7e6e8"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/txtRepeatPassRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginBottom="13sp"
+                    android:background="@drawable/bg_logintxt"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:paddingLeft="15sp"
+                    android:paddingEnd="15sp"
+                    android:textColor="#430370" />
+
+                <TextView
+                    android:id="@+id/lblInfoRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Info del registro"
+                    android:textAlignment="center"
+                    android:textColor="#e7e6e8"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/btnRegistrarPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_corner"
+                    android:text="Registrate"
+                    app:backgroundTint="#36015c" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
