@@ -5,10 +5,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.accessibility.AccessibilityViewCommand
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -57,10 +59,15 @@ class LoginActivity : AppCompatActivity() {
                         //lblInfo.text = response.body!!.string()
                         try {
                             val json = JSONObject(response.body!!.string())
-                            lblInfo.text = json["token"].toString()
-                            Toast.makeText(this,json["token"].toString(),Toast.LENGTH_LONG).show()
+                            //lblInfo.text = json["token"].toString()
+                            //Toast.makeText(this,json["token"].toString(),Toast.LENGTH_LONG).show()
+                            val userJson = json.getJSONObject("user");
+                            //Log.d("Username",userJson["name"].toString())
+                            lblInfo.text = ""
                             val mainIntent = Intent(this,MainActivity::class.java)
                                 .putExtra("token",json["token"].toString())
+                                .putExtra("username",userJson["name"].toString())
+                                .putExtra("email",userJson["email"].toString())
                             startActivity(mainIntent)
                         } catch (e : Exception) {
                             lblInfo.text = "Datos incorrectos"
