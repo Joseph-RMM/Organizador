@@ -85,7 +85,7 @@ class AddTareaActivity : AppCompatActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://20.114.118.119/organizzdorapi/public/api/task")
+                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/task")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .post(formBody)
                 .build()
@@ -110,7 +110,7 @@ class AddTareaActivity : AppCompatActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://20.114.118.119/organizzdorapi/public/api/categories")
+                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .post(formBody)
                 .build()

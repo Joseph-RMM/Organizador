@@ -67,7 +67,7 @@ class DetailsTareaFragment : Fragment() {
         binding.btnBorrar.setOnClickListener {
             val okHttpClient = OkHttpClient()
             val request = Request.Builder()
-                .url("http://20.114.118.119/organizzdorapi/public/api/task/$IDTarea")
+                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/task/$IDTarea")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .delete()
                 .build()
@@ -106,7 +106,7 @@ class DetailsTareaFragment : Fragment() {
                 .add("Id_categoria",viewModel.tarea.Categoria.toString())
                 .build()
             val request = Request.Builder()
-                .url("http://20.114.118.119/organizzdorapi/public/api/task/$IDTarea")
+                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/task/$IDTarea")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .put(formBody)
                 .build()
@@ -138,7 +138,7 @@ class DetailsTareaFragment : Fragment() {
             //Get tareas
             val okHttpClient = OkHttpClient()
             val request = Request.Builder()
-                .url("http://20.114.118.119/organizzdorapi/public/api/task/$IDTarea")
+                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/task/$IDTarea")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .get()
                 .build()

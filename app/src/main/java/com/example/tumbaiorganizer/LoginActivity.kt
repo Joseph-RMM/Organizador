@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                     .build()
 
                 val request = Request.Builder()
-                    .url("http://20.114.118.119/organizzdorapi/public/api/login")
+                    .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/login")
                     .post(formBody)
                     .build()
 

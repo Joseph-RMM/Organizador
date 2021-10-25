@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
     fun showTareas() {
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
-            .url("http://20.114.118.119/organizzdorapi/public/api/task")
+            .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/task")
             .addHeader("Authorization", "Bearer " + tokenAPI)
             .get()
             .build()
