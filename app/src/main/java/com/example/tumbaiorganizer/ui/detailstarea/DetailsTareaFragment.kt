@@ -57,7 +57,26 @@ class DetailsTareaFragment : Fragment() {
         val root: View = binding.root
 
         binding.btnBorrar.setOnClickListener {
-            binding.txtEditActividad.setText("ID: $IDTarea");
+            val okHttpClient = OkHttpClient()
+            val request = Request.Builder()
+                .url("http://20.114.118.119/organizzdorapi/public/api/task/$IDTarea")
+                .addHeader("Authorization", "Bearer " + tokenAPI)
+                .delete()
+                .build()
+
+            okHttpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    Toast.makeText(binding.root.context,"Ha ocurrido un problema con el servidor",Toast.LENGTH_SHORT).show()
+                } else {
+                    if (response.body!!.string() == "1") {
+                        Toast.makeText(binding.root.context,"La tarea ha sido eliminada",Toast.LENGTH_SHORT).show()
+                        getActivity()?.supportFragmentManager?.popBackStack()
+                    } else {
+                        Toast.makeText(binding.root.context,"La tarea ya no existe",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
         }
 
         return root;
