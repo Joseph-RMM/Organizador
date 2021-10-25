@@ -17,55 +17,83 @@
         android:textColor="#673AB7"
         android:textSize="34sp" />
 
-    <TextView
-        android:id="@+id/textView13"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Actividad:"
-        android:textColor="#9C27B0"
-        android:textSize="20sp" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/txtEditActividad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:editable="false"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="¿Qué debes hacer?" />
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fecha de entrega:"
-        android:textColor="#9C27B0"
-        android:textSize="20sp" />
-
-    <CalendarView
-        android:id="@+id/cvEditFechaEntrega"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnEditTarea"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Editar" />
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/btnBorrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Eliminar"
-            app:backgroundTint="#E91E63" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actividad:"
+                android:textColor="#9C27B0"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/txtEditActividad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Nombre de la tarea" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripción"
+                android:textColor="#9C27B0"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/txtEditDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="¿Qué debes hacer?" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de entrega:"
+                android:textColor="#9C27B0"
+                android:textSize="20sp" />
+
+            <CalendarView
+                android:id="@+id/cvEditFechaEntrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnEditTarea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Editar" />
+
+                <Button
+                    android:id="@+id/btnBorrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Eliminar"
+                    app:backgroundTint="#E91E63" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

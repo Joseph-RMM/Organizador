@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         btnCerrarSesion.setOnClickListener {
             val okHttpClient = OkHttpClient()
             val request = Request.Builder()
-                .url("http://20.97.115.3/organizzdorapi/public/api/logout")
+                .url("http://20.114.118.119/organizzdorapi/public/api/logout")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .post("".toRequestBody())
                 .build()

@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
     fun showTareas() {
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
-            .url("http://20.97.115.3/organizzdorapi/public/api/task")
+            .url("http://20.114.118.119/organizzdorapi/public/api/task")
             .addHeader("Authorization", "Bearer " + tokenAPI)
             .get()
             .build()
@@ -138,9 +138,12 @@ class HomeFragment : Fragment() {
 
                     lvTareas.setOnItemClickListener { parent, view, position, index ->
                         val selectedTarea : Tarea = parent.getItemAtPosition(position) as Tarea
-                        Toast.makeText(binding.root.context,selectedTarea.Actividad,Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(binding.root.context,selectedTarea.Actividad,Toast.LENGTH_SHORT).show()
 
                         val fragmentDetails = DetailsTareaFragment()
+                        var bundle : Bundle = Bundle();
+                        bundle.putInt("ID", selectedTarea.ID);
+                        fragmentDetails.arguments = bundle;
                         val manager = requireActivity().supportFragmentManager.beginTransaction()
                         manager.add(R.id.nav_host_fragment_content_main,fragmentDetails)
                         manager.addToBackStack(null)

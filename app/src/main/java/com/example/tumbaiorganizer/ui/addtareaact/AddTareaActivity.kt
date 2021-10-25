@@ -43,6 +43,8 @@ class AddTareaActivity : AppCompatActivity() {
             StrictMode.setThreadPolicy(policy)
         }
 
+        lblInfo.text =""
+
         //Toast.makeText(this, tokenAPI+"", Toast.LENGTH_SHORT).show()
 
         calendar.setOnDateChangeListener(OnDateChangeListener { view, year, month, day ->
@@ -83,14 +85,14 @@ class AddTareaActivity : AppCompatActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://20.97.115.3/organizzdorapi/public/api/task")
+                .url("http://20.114.118.119/organizzdorapi/public/api/task")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .post(formBody)
                 .build()
 
             okHttpClient.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) {
-                    lblInfo.text = "Datos incorrectos o cuenta inexistente"
+                    lblInfo.text = "Ha ocurrido un problema con el servidor"
                 } else {
                     lblInfo.text = response.body!!.string()
                     Toast.makeText(applicationContext,"Tarea Añadida!",Toast.LENGTH_SHORT).show()
@@ -108,7 +110,7 @@ class AddTareaActivity : AppCompatActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://20.97.115.3/organizzdorapi/public/api/categories")
+                .url("http://20.114.118.119/organizzdorapi/public/api/categories")
                 .addHeader("Authorization", "Bearer " + tokenAPI)
                 .post(formBody)
                 .build()
