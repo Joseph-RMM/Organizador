@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CalendarView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -18,8 +19,10 @@ import com.example.tumbaiorganizer.R
 import com.example.tumbaiorganizer.databinding.DetailsTareaFragmentBinding
 import com.example.tumbaiorganizer.databinding.FragmentHomeBinding
 import com.example.tumbaiorganizer.ui.home.HomeViewModel
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -36,6 +39,7 @@ class DetailsTareaFragment : Fragment() {
 
     private lateinit var viewModel: DetailsTareaViewModel
     private var IDTarea = 0;
+    private lateinit var selectedDate : String
 
     private val tokenAPI by lazy {  activity?.intent?.getStringExtra("token")}
 
@@ -56,6 +60,10 @@ class DetailsTareaFragment : Fragment() {
         _binding = DetailsTareaFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.cvEditFechaEntrega.setOnDateChangeListener(CalendarView.OnDateChangeListener { view, year, month, day ->
+            selectedDate = "$year-${month + 1}-$day";
+        })
+
         binding.btnBorrar.setOnClickListener {
             val okHttpClient = OkHttpClient()
             val request = Request.Builder()
@@ -74,6 +82,42 @@ class DetailsTareaFragment : Fragment() {
                     } else {
                         Toast.makeText(binding.root.context,"La tarea ya no existe",Toast.LENGTH_SHORT).show()
                     }
+
+                }
+            }
+        }
+
+        binding.btnEditTarea.setOnClickListener {
+            //Actualizar ViewModel
+            viewModel.tarea.Actividad = binding.txtEditActividad.text.toString()
+            viewModel.tarea.Descripcion = binding.txtEditDescripcion.text.toString()
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            viewModel.tarea.Fecha = sdf.parse(selectedDate)
+
+
+            //Enviar al API
+            val okHttpClient = OkHttpClient()
+            val formBody = FormBody.Builder()
+                .add("Nombre_Tarea",viewModel.tarea.Actividad)
+                .add("Descripcion",viewModel.tarea.Descripcion)
+                .add("Fecha_Finalizacion",viewModel.tarea.getAPIDateFormat())
+                .add("estado",viewModel.tarea.Estatus.toString())
+                .add("prioridad",viewModel.tarea.Prioridad.toString())
+                .add("Id_categoria",viewModel.tarea.Categoria.toString())
+                .build()
+            val request = Request.Builder()
+                .url("http://20.114.118.119/organizzdorapi/public/api/task/$IDTarea")
+                .addHeader("Authorization", "Bearer " + tokenAPI)
+                .put(formBody)
+                .build()
+
+            okHttpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    Toast.makeText(binding.root.context,"Ha ocurrido un problema al guardar la información",Toast.LENGTH_LONG).show()
+                } else {
+                    //lblUsername.text = response.body!!.string()
+                    Log.d("JSONResponse",response.body!!.string())
+                    Toast.makeText(binding.root.context,"Tarea actualizada",Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -106,7 +150,7 @@ class DetailsTareaFragment : Fragment() {
                     val tareaJSON = JSONObject(response.body!!.string())
                     //Log.d("JSONResponse",response.body!!.string())
                     val sdf = SimpleDateFormat("yyyy-MM-dd")
-                    var tareaObject = Tarea(
+                    viewModel.tarea = Tarea(
                         tareaJSON.getString("Id_tareas").toInt(),
                         tareaJSON.getString("Nombre_Tarea"),
                         tareaJSON.getString("Descripcion"),
@@ -116,9 +160,10 @@ class DetailsTareaFragment : Fragment() {
                         tareaJSON.getInt("Id_categoria")
                     )
 
-                    binding.txtEditActividad.setText(tareaObject.Actividad)
-                    binding.txtEditDescripcion.setText(tareaObject.Descripcion)
-                    binding.cvEditFechaEntrega.date = sdf.parse(tareaObject.getAPIDateFormat()).time
+                    binding.txtEditActividad.setText(viewModel.tarea.Actividad)
+                    binding.txtEditDescripcion.setText(viewModel.tarea.Descripcion)
+                    binding.cvEditFechaEntrega.date = sdf.parse(viewModel.tarea.getAPIDateFormat()).time
+                    selectedDate = viewModel.tarea.getAPIDateFormat()
 
                 }
             }
