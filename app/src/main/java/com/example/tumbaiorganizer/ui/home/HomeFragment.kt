@@ -149,8 +149,8 @@ class HomeFragment : Fragment() {
                         var bundle: Bundle = Bundle();
                         bundle.putInt("ID", selectedTarea.ID);
                         fragmentDetails.arguments = bundle;
-                        val manager = requireActivity().supportFragmentManager.beginTransaction()
-                        manager.add(R.id.nav_host_fragment_content_main, fragmentDetails)
+                        val manager = parentFragmentManager.beginTransaction()
+                        manager.replace(R.id.nav_host_fragment_content_main, fragmentDetails)
                         manager.addToBackStack(null)
                         manager.commit()
 

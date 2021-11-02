@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.tumbaiorganizer.Model.Categoria
 import com.example.tumbaiorganizer.R
 import com.example.tumbaiorganizer.databinding.FragmentGalleryBinding
+import com.example.tumbaiorganizer.ui.detailscat.DetailsCategoriaFragment
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -84,6 +86,22 @@ class GalleryFragment : Fragment() {
 
                     binding.lvCategorias.adapter = arrayAdapter
 
+                    binding.lvCategorias.setOnItemClickListener { parent, view, position, index ->
+                        val selectedCategoria : Categoria = parent.getItemAtPosition(position) as Categoria
+                        //Toast.makeText(binding.root.context,selectedTarea.Actividad,Toast.LENGTH_SHORT).show()
+
+                        val fragmentDetails = DetailsCategoriaFragment()
+                        var bundle: Bundle = Bundle();
+                        bundle.putInt("ID", selectedCategoria.Id_categoria);
+                        fragmentDetails.arguments = bundle;
+
+
+                        val manager = parentFragmentManager.beginTransaction()
+                        manager.replace(R.id.nav_host_fragment_content_main, fragmentDetails)
+                        manager.addToBackStack(null)
+                        manager.commit()
+
+                    }
                    //  binding.lblInfo.text = response.body!!.string()
                    /* val json = JSONTokener(response.body!!.string())
                     val jsonArray = JSONArray(json)
