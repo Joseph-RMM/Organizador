@@ -96,62 +96,70 @@ class HomeFragment : Fragment() {
             .get()
             .build()
 
-        okHttpClient.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                binding.lblTareasListJSON.text = "Ha ocurrido un problema con el servidor"
-            } else {
-                binding.lblTareasListJSON.text = ""
-                homeViewModel.clearList()
-                //binding.lblTareasListJSON.text = response.body!!.string()
-                val json = JSONTokener(response.body!!.string())
-                val jsonArray = JSONArray(json)
-                //val array = json.getJSONArray("")
-                binding.lblCantTareas.text = jsonArray.length().toString()
-                //val json = JSONObject(response.body!!.string())
-                //Toast.makeText(this,json["message"].toString(),Toast.LENGTH_LONG).show()
-                var i = 0;
-                while (i < jsonArray.length()) {
-                    var tareaJSON = jsonArray.getJSONObject(i)
-                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+        try {
+            okHttpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    binding.lblTareasListJSON.text = "Ha ocurrido un problema con el servidor"
+                } else {
+                    binding.lblTareasListJSON.text = ""
+                    homeViewModel.clearList()
+                    //binding.lblTareasListJSON.text = response.body!!.string()
+                    val json = JSONTokener(response.body!!.string())
+                    val jsonArray = JSONArray(json)
+                    //val array = json.getJSONArray("")
+                    binding.lblCantTareas.text = jsonArray.length().toString()
+                    //val json = JSONObject(response.body!!.string())
+                    //Toast.makeText(this,json["message"].toString(),Toast.LENGTH_LONG).show()
+                    var i = 0;
+                    while (i < jsonArray.length()) {
+                        var tareaJSON = jsonArray.getJSONObject(i)
+                        val sdf = SimpleDateFormat("yyyy-MM-dd")
 
-                    var tareaObject = Tarea(
-                        tareaJSON.getString("Id_tareas").toInt(),
-                        tareaJSON.getString("Nombre_Tarea"),
-                        tareaJSON.getString("Descripcion"),
-                        sdf.parse(tareaJSON.getString("Fecha_Finalizacion")),
-                        tareaJSON.getInt("estado"),
-                        tareaJSON.getInt("prioridad"),
-                        tareaJSON.getInt("Id_categoria")
-                    )
+                        var tareaObject = Tarea(
+                            tareaJSON.getString("Id_tareas").toInt(),
+                            tareaJSON.getString("Nombre_Tarea"),
+                            tareaJSON.getString("Descripcion"),
+                            sdf.parse(tareaJSON.getString("Fecha_Finalizacion")),
+                            tareaJSON.getInt("estado"),
+                            tareaJSON.getInt("prioridad"),
+                            tareaJSON.getInt("Id_categoria")
+                        )
 
-                    homeViewModel.addTarea(tareaObject)
-                    i++
+                        homeViewModel.addTarea(tareaObject)
+                        i++
 
-                }
+                    }
 
-                if (homeViewModel.listaTareas.size > 0) {
+                    //if (homeViewModel.listaTareas.size > 0) {
                     //Añadir tareas a la lista
-                    val lvTareas : ListView = binding.lvTareas
-                    val arrayAdapter : ArrayAdapter<*>
-                    arrayAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,homeViewModel.listaTareas);
+                    val lvTareas: ListView = binding.lvTareas
+                    val arrayAdapter: ArrayAdapter<*>
+                    arrayAdapter = ArrayAdapter(
+                        binding.root.context,
+                        android.R.layout.simple_list_item_1,
+                        homeViewModel.listaTareas
+                    );
                     lvTareas.adapter = arrayAdapter
 
                     lvTareas.setOnItemClickListener { parent, view, position, index ->
-                        val selectedTarea : Tarea = parent.getItemAtPosition(position) as Tarea
+                        val selectedTarea: Tarea = parent.getItemAtPosition(position) as Tarea
                         //Toast.makeText(binding.root.context,selectedTarea.Actividad,Toast.LENGTH_SHORT).show()
 
                         val fragmentDetails = DetailsTareaFragment()
-                        var bundle : Bundle = Bundle();
+                        var bundle: Bundle = Bundle();
                         bundle.putInt("ID", selectedTarea.ID);
                         fragmentDetails.arguments = bundle;
                         val manager = requireActivity().supportFragmentManager.beginTransaction()
-                        manager.add(R.id.nav_host_fragment_content_main,fragmentDetails)
+                        manager.add(R.id.nav_host_fragment_content_main, fragmentDetails)
                         manager.addToBackStack(null)
                         manager.commit()
 
                     }
+                    //}
                 }
             }
+        } catch (e: java.net.ConnectException) {
+            binding.lblTareasListJSON.text = "No se ha podido conectar con el server"
         }
     }
 }

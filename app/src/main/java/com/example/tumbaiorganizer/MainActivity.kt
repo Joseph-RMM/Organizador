@@ -88,15 +88,23 @@ class MainActivity : AppCompatActivity() {
                 .post("".toRequestBody())
                 .build()
 
-            okHttpClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    Toast.makeText(this,"Ha ocurrido un problema al cerrar sesión",Toast.LENGTH_LONG).show()
-                } else {
-                    //lblUsername.text = response.body!!.string()
-                    val json = JSONObject(response.body!!.string())
-                    Toast.makeText(this,json["message"].toString(),Toast.LENGTH_LONG).show()
-                    finish()
+            try {
+                okHttpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        Toast.makeText(
+                            this,
+                            "Ha ocurrido un problema al cerrar sesión",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        //lblUsername.text = response.body!!.string()
+                        val json = JSONObject(response.body!!.string())
+                        Toast.makeText(this, json["message"].toString(), Toast.LENGTH_LONG).show()
+                        finish()
+                    }
                 }
+            }catch (e: java.net.ConnectException) {
+                Toast.makeText(this, "No se ha podido conectar con el servidor", Toast.LENGTH_LONG).show()
             }
         }
         return true

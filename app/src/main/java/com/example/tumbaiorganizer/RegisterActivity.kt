@@ -42,46 +42,57 @@ class RegisterActivity : AppCompatActivity() {
             var Pass = txtPass.text.toString()
             var RepeatPass = txtRepeatPass.text.toString()
 
-
-            if (Pass == RepeatPass) {
-
-
-                //Hacer peticion a la API
-                val okHttpClient = OkHttpClient()
-                //val mediaType = "application/json; charset=utf-8".toMediaType()
-                //val requestBody = "".toRequestBody()
+            if (Username != "" && Correo != "" && Pass != "" && RepeatPass != "") {
+                if (Pass == RepeatPass) {
 
 
-                val formBody = FormBody.Builder()
-                    .add("name", Username)
-                    .add("email", Correo)
-                    .add("password", Pass)
-                    .add("password_confirmation", RepeatPass)
-                    .build()
+                    //Hacer peticion a la API
+                    val okHttpClient = OkHttpClient()
+                    //val mediaType = "application/json; charset=utf-8".toMediaType()
+                    //val requestBody = "".toRequestBody()
 
-                val request = Request.Builder()
-                    .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/register")
-                    .post(formBody)
-                    .build()
 
-                okHttpClient.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) {
-                        lblInfo.text = "Ha habido un problema con el servidor :c"
-                    } else {
-                       // lblInfo.text = response.body!!.string()
-                       try {
-                           val json = JSONObject(response.body!!.string())
-                           lblInfo.text = json["token"].toString()
-                           Toast.makeText(this,"Tu cuenta ha sido creada",Toast.LENGTH_LONG).show()
-                           finish()
-                       } catch (e : Exception) {
-                           lblInfo.text = "Introduce una dirección de correo válida"
-                       }
+                    val formBody = FormBody.Builder()
+                        .add("name", Username)
+                        .add("email", Correo)
+                        .add("password", Pass)
+                        .add("password_confirmation", RepeatPass)
+                        .build()
 
+                    val request = Request.Builder()
+                        .url("http://" + getString(R.string.server_ip) + "/organizzdorapi/public/api/register")
+                        .post(formBody)
+                        .build()
+                    try {
+                        okHttpClient.newCall(request).execute().use { response ->
+                            if (!response.isSuccessful) {
+                                lblInfo.text = "Ha habido un problema con el servidor :c"
+                            } else {
+                                // lblInfo.text = response.body!!.string()
+                                try {
+                                    val json = JSONObject(response.body!!.string())
+                                    lblInfo.text = json["token"].toString()
+                                    Toast.makeText(
+                                        this,
+                                        "Tu cuenta ha sido creada",
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
+                                    finish()
+                                } catch (e: Exception) {
+                                    lblInfo.text = "Introduce una dirección de correo válida"
+                                }
+
+                            }
+                        }
+                    } catch (e: java.net.ConnectException) {
+                        lblInfo.text = "No se ha podido conectar con el servidor"
                     }
+                } else {
+                    lblInfo.text = "Las contraseñas no coinciden"
                 }
             } else {
-                lblInfo.text = "Las contraseñas no coinciden"
+                lblInfo.text = "Por favor llene todos los campos"
             }
 /*
             val client = OkHttpClient()

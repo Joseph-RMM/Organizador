@@ -90,14 +90,19 @@ class AddTareaActivity : AppCompatActivity() {
                 .post(formBody)
                 .build()
 
-            okHttpClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    lblInfo.text = "Ha ocurrido un problema con el servidor"
-                } else {
-                    lblInfo.text = response.body!!.string()
-                    Toast.makeText(applicationContext,"Tarea Añadida!",Toast.LENGTH_SHORT).show()
-                    finish()
+            try {
+                okHttpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        lblInfo.text = "Ha ocurrido un problema con el servidor"
+                    } else {
+                        //lblInfo.text = response.body!!.string()
+                        Toast.makeText(applicationContext, "Tarea Añadida!", Toast.LENGTH_SHORT)
+                            .show()
+                        finish()
+                    }
                 }
+            } catch (e: java.net.ConnectException) {
+                lblInfo.text = "No se ha podido conectar con el server"
             }
 
         }
@@ -115,12 +120,16 @@ class AddTareaActivity : AppCompatActivity() {
                 .post(formBody)
                 .build()
 
-            okHttpClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    lblInfo.text = "Datos incorrectos o cuenta inexistente"
-                } else {
-                    lblInfo.text = response.body!!.string()
+            try {
+                okHttpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        lblInfo.text = "Datos incorrectos o cuenta inexistente"
+                    } else {
+                        //lblInfo.text = response.body!!.string()
+                    }
                 }
+            } catch (e: java.net.ConnectException) {
+                lblInfo.text = "No se ha podido conectar con el server"
             }
         }
     }
