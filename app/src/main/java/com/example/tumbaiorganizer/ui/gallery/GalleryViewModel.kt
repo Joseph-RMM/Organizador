@@ -1,13 +1,17 @@
 package com.example.tumbaiorganizer.ui.gallery
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tumbaiorganizer.Model.Categoria
 
 class GalleryViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+    val listaCategorias = arrayListOf<Categoria>()
+
+    fun clearList() {
+        listaCategorias.clear()
     }
-    val text: LiveData<String> = _text
+
+    fun addCategoria(categoria: Categoria) {
+        listaCategorias.add(categoria)
+    }
 }
