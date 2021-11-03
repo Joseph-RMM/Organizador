@@ -63,6 +63,21 @@
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Categoría:"
+                android:textColor="#9C27B0"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lblShowCat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="General"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Fecha de entrega:"
                 android:textColor="#9C27B0"
                 android:textSize="20sp" />

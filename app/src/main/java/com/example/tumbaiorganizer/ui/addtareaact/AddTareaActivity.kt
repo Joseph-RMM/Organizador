@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
+import android.view.View
 import android.widget.*
 import android.widget.CalendarView.OnDateChangeListener
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,7 @@ class AddTareaActivity : AppCompatActivity() {
     val spinCat : Spinner by lazy { findViewById(R.id.spinnerCategorias) }
     val tokenAPI by lazy { intent.getStringExtra("token") }
     lateinit var selectedDate : String;
+    val listaCategorias = arrayListOf<Categoria>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,18 @@ class AddTareaActivity : AppCompatActivity() {
 
         lblInfo.text =""
 
+/*
+        spinCat.onItemSelectedListener = object :
+        AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                // An item was selected. You can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+                Log.d("SelectedID","${listaCategorias[spinCat.selectedItemPosition].Id_categoria}")
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        }*/
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -61,7 +75,7 @@ class AddTareaActivity : AppCompatActivity() {
                     lblInfo.text = "Ha ocurrido un problema con el servidor"
                 } else {
                     lblInfo.text = ""
-                    val listaCategorias = arrayListOf<Categoria>()
+
                     val json = JSONTokener(response.body!!.string())
                     val jsonArray = JSONArray(json)
 
@@ -104,14 +118,16 @@ class AddTareaActivity : AppCompatActivity() {
         btnAdd.setOnClickListener {
             val sdf = SimpleDateFormat("yyyy-MM-dd")
             //val selectedDate: String = sdf.format(Date(calendar.date))
+            var catID : Categoria = listaCategorias[spinCat.selectedItemPosition]
             var newTarea : Tarea = Tarea(0,
                 txtActividad.text.toString(),
                 txtDescripcion.text.toString(),
                 sdf.parse(selectedDate),
-                1,1,1
+                1,1,
+                catID.Id_categoria
             )
 
-
+            Log.d("Cat ID","${catID.Id_categoria}")
 
             //val toast = Toast.makeText(applicationContext, newTarea.getAPIDateFormat(), Toast.LENGTH_LONG).show()
             //toast.show()

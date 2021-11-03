@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.tumbaiorganizer.MainActivity
+import com.example.tumbaiorganizer.Model.Categoria
 import com.example.tumbaiorganizer.Model.Tarea
 import com.example.tumbaiorganizer.R
 import com.example.tumbaiorganizer.databinding.DetailsTareaFragmentBinding
@@ -130,7 +131,8 @@ class DetailsTareaFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(DetailsTareaViewModel::class.java)
-        // TODO: Use the ViewModel
+
+
         val bundle = this.arguments
         if (bundle != null) {
             IDTarea = bundle.getInt("ID")
@@ -171,6 +173,27 @@ class DetailsTareaFragment : Fragment() {
             Toast.makeText(binding.root.context,"Ha ocurrido un error en la app al pasar la información",Toast.LENGTH_SHORT).show();
             Log.d("Bundle","null")
         }
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories/${viewModel.tarea.Categoria}")
+            .addHeader("Authorization", "Bearer " + tokenAPI)
+            .get()
+            .build()
+
+        okHttpClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                Toast.makeText(binding.root.context,"Ha ocurrido un problema con la petición", Toast.LENGTH_SHORT).show()
+            } else {
+                val categoriaJSON = JSONObject(response.body!!.string())
+                viewModel.categoria = Categoria(
+                    categoriaJSON.getInt("Id_categoria"),
+                    categoriaJSON.getString("Nombre")
+                )
+                binding.lblShowCat.setText("${viewModel.categoria.Nombre}")
+            }
+        }
+
     }
 
 }

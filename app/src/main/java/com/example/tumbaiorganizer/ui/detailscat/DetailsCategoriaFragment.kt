@@ -107,7 +107,7 @@ class DetailsCategoriaFragment : Fragment() {
         val bundle = this.arguments
         if (bundle != null) {
             IDCategoria = bundle.getInt("ID")
-            Toast.makeText(binding.root.context, "ID: $IDCategoria", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(binding.root.context, "ID: $IDCategoria", Toast.LENGTH_SHORT).show();
             //Get tareas
             val okHttpClient = OkHttpClient()
             val request = Request.Builder()
