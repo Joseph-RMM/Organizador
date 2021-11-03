@@ -5,19 +5,20 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
-import android.widget.Button
-import android.widget.CalendarView
+import android.widget.*
 import android.widget.CalendarView.OnDateChangeListener
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tumbaiorganizer.MainActivity
+import com.example.tumbaiorganizer.Model.Categoria
 import com.example.tumbaiorganizer.Model.Tarea
 import com.example.tumbaiorganizer.R
+import com.example.tumbaiorganizer.ui.detailscat.DetailsCategoriaFragment
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONTokener
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,6 +32,7 @@ class AddTareaActivity : AppCompatActivity() {
     val btnAdd : Button by lazy { findViewById(R.id.btnAddTarea) }
     val btnCategoria : Button by lazy { findViewById(R.id.btnAddCategoriaTest) }
     val lblInfo : TextView by lazy { findViewById(R.id.lblInfoAddTarea) }
+    val spinCat : Spinner by lazy { findViewById(R.id.spinnerCategorias) }
     val tokenAPI by lazy { intent.getStringExtra("token") }
     lateinit var selectedDate : String;
 
@@ -45,6 +47,48 @@ class AddTareaActivity : AppCompatActivity() {
 
         lblInfo.text =""
 
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
+            .addHeader("Authorization", "Bearer " + tokenAPI)
+            .get()
+            .build()
+
+        try {
+            okHttpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    lblInfo.text = "Ha ocurrido un problema con el servidor"
+                } else {
+                    lblInfo.text = ""
+                    val listaCategorias = arrayListOf<Categoria>()
+                    val json = JSONTokener(response.body!!.string())
+                    val jsonArray = JSONArray(json)
+
+                    var i = 0;
+                    while (i< jsonArray.length()) {
+                        var categoriaJSON = jsonArray.getJSONObject(i)
+                        var categoriaObject = Categoria(
+                            categoriaJSON.getInt("Id_categoria"),
+                            categoriaJSON.getString("Nombre")
+                        )
+                        listaCategorias.add(categoriaObject)
+                        i++
+                    }
+
+                    val arrayAdapter = ArrayAdapter(
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        listaCategorias
+                    );
+
+                    spinCat.adapter = arrayAdapter
+
+                }
+            }
+        } catch (e: java.net.ConnectException) {
+            lblInfo.text = "No se ha podido conectar con el server"
+        }
         //Toast.makeText(this, tokenAPI+"", Toast.LENGTH_SHORT).show()
 
         calendar.setOnDateChangeListener(OnDateChangeListener { view, year, month, day ->

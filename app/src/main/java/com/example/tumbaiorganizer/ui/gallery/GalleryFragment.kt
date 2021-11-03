@@ -1,6 +1,7 @@
 package com.example.tumbaiorganizer.ui.gallery
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.tumbaiorganizer.Model.Categoria
 import com.example.tumbaiorganizer.R
 import com.example.tumbaiorganizer.databinding.FragmentGalleryBinding
 import com.example.tumbaiorganizer.ui.detailscat.DetailsCategoriaFragment
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -38,6 +40,32 @@ class GalleryFragment : Fragment() {
         val root: View = binding.root
 
         showCategorias()
+
+        binding.btnAddCategoria.setOnClickListener {
+            val okHttpClient = OkHttpClient()
+
+            val formBody = FormBody.Builder()
+                .add("Nombre",binding.txtNewCatName.text.toString())
+                .build()
+
+            val request = Request.Builder()
+                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
+                .addHeader("Authorization", "Bearer " + tokenAPI)
+                .post(formBody)
+                .build()
+
+            try {
+                okHttpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        binding.lblInfo.setText("Datos incorrectos o cuenta inexistente")
+                    } else {
+                        Log.d("API Response:", response.body!!.string())
+                    }
+                }
+            } catch (e: java.net.ConnectException) {
+                binding.lblInfo.setText("No se ha podido conectar con el server")
+            }
+        }
 
         return root
     }
