@@ -82,7 +82,7 @@ class DetailsCategoriaFragment : Fragment() {
 
             okHttpClient.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) {
-                    Toast.makeText(binding.root.context,"Ha ocurrido un problema con el servidor",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(binding.root.context,"Ha ocurrido un problema con el servidor. Revise que no haya tareas en esa categoría",Toast.LENGTH_LONG).show()
                 } else {
                     if (response.body!!.string() == "1") {
                         Toast.makeText(binding.root.context,"La categoría ha sido eliminada",Toast.LENGTH_SHORT).show()

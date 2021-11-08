@@ -60,6 +60,8 @@ class GalleryFragment : Fragment() {
                         binding.lblInfo.setText("Datos incorrectos o cuenta inexistente")
                     } else {
                         Log.d("API Response:", response.body!!.string())
+                        showCategorias()
+                        binding.txtNewCatName.setText("")
                     }
                 }
             } catch (e: java.net.ConnectException) {

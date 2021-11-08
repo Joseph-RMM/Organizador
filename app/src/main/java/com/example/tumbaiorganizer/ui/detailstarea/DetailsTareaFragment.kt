@@ -61,6 +61,7 @@ class DetailsTareaFragment : Fragment() {
         _binding = DetailsTareaFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
         binding.cvEditFechaEntrega.setOnDateChangeListener(CalendarView.OnDateChangeListener { view, year, month, day ->
             selectedDate = "$year-${month + 1}-$day";
         })

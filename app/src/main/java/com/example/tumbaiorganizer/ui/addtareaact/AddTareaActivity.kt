@@ -31,7 +31,6 @@ class AddTareaActivity : AppCompatActivity() {
     val txtDescripcion : TextView by lazy { findViewById(R.id.txtAddDescripcion) }
     val calendar : CalendarView by lazy { findViewById(R.id.cvAddFechaEntrega) }
     val btnAdd : Button by lazy { findViewById(R.id.btnAddTarea) }
-    val btnCategoria : Button by lazy { findViewById(R.id.btnAddCategoriaTest) }
     val lblInfo : TextView by lazy { findViewById(R.id.lblInfoAddTarea) }
     val spinCat : Spinner by lazy { findViewById(R.id.spinnerCategorias) }
     val tokenAPI by lazy { intent.getStringExtra("token") }
@@ -48,7 +47,11 @@ class AddTareaActivity : AppCompatActivity() {
         }
 
         lblInfo.text =""
-
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        var today = java.util.Calendar.getInstance().time
+        selectedDate = sdf.format(today)
+        Log.d("Date setted","$selectedDate")
+        ShowCats()
 /*
         spinCat.onItemSelectedListener = object :
         AdapterView.OnItemSelectedListener{
@@ -62,47 +65,7 @@ class AddTareaActivity : AppCompatActivity() {
             }
         }*/
 
-        val okHttpClient = OkHttpClient()
-        val request = Request.Builder()
-            .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
-            .addHeader("Authorization", "Bearer " + tokenAPI)
-            .get()
-            .build()
 
-        try {
-            okHttpClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    lblInfo.text = "Ha ocurrido un problema con el servidor"
-                } else {
-                    lblInfo.text = ""
-
-                    val json = JSONTokener(response.body!!.string())
-                    val jsonArray = JSONArray(json)
-
-                    var i = 0;
-                    while (i< jsonArray.length()) {
-                        var categoriaJSON = jsonArray.getJSONObject(i)
-                        var categoriaObject = Categoria(
-                            categoriaJSON.getInt("Id_categoria"),
-                            categoriaJSON.getString("Nombre")
-                        )
-                        listaCategorias.add(categoriaObject)
-                        i++
-                    }
-
-                    val arrayAdapter = ArrayAdapter(
-                        this,
-                        android.R.layout.simple_spinner_item,
-                        listaCategorias
-                    );
-
-                    spinCat.adapter = arrayAdapter
-
-                }
-            }
-        } catch (e: java.net.ConnectException) {
-            lblInfo.text = "No se ha podido conectar con el server"
-        }
         //Toast.makeText(this, tokenAPI+"", Toast.LENGTH_SHORT).show()
 
         calendar.setOnDateChangeListener(OnDateChangeListener { view, year, month, day ->
@@ -116,7 +79,9 @@ class AddTareaActivity : AppCompatActivity() {
         })
 
         btnAdd.setOnClickListener {
+
             val sdf = SimpleDateFormat("yyyy-MM-dd")
+
             //val selectedDate: String = sdf.format(Date(calendar.date))
             var catID : Categoria = listaCategorias[spinCat.selectedItemPosition]
             var newTarea : Tarea = Tarea(0,
@@ -167,30 +132,81 @@ class AddTareaActivity : AppCompatActivity() {
 
         }
 
-        btnCategoria.setOnClickListener {
-            val okHttpClient = OkHttpClient()
 
-            val formBody = FormBody.Builder()
-                .add("Nombre","General")
-                .build()
+    }
 
-            val request = Request.Builder()
-                .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
-                .addHeader("Authorization", "Bearer " + tokenAPI)
-                .post(formBody)
-                .build()
+     fun CreateGeneralCat() {
+         Log.d("No Cats found","Generating General Cat")
+         val okHttpClient = OkHttpClient()
 
-            try {
-                okHttpClient.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) {
-                        lblInfo.text = "Datos incorrectos o cuenta inexistente"
-                    } else {
-                        //lblInfo.text = response.body!!.string()
+         val formBody = FormBody.Builder()
+             .add("Nombre","General")
+             .build()
+
+         val request = Request.Builder()
+             .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
+             .addHeader("Authorization", "Bearer " + tokenAPI)
+             .post(formBody)
+             .build()
+
+         try {
+             okHttpClient.newCall(request).execute().use { response ->
+                 if (!response.isSuccessful) {
+                     lblInfo.setText("Datos incorrectos o cuenta inexistente")
+                 } else {
+                     Log.d("API Response:", response.body!!.string())
+                 }
+             }
+         } catch (e: java.net.ConnectException) {
+             lblInfo.setText("No se ha podido conectar con el server")
+         }
+     }
+
+    fun ShowCats(){
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://"+ getString(R.string.server_ip) +"/organizzdorapi/public/api/categories")
+            .addHeader("Authorization", "Bearer " + tokenAPI)
+            .get()
+            .build()
+
+        try {
+            okHttpClient.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    lblInfo.text = "Ha ocurrido un problema con el servidor"
+                } else {
+                    lblInfo.text = ""
+
+                    val json = JSONTokener(response.body!!.string())
+                    val jsonArray = JSONArray(json)
+
+                    var i = 0;
+                    while (i< jsonArray.length()) {
+                        var categoriaJSON = jsonArray.getJSONObject(i)
+                        var categoriaObject = Categoria(
+                            categoriaJSON.getInt("Id_categoria"),
+                            categoriaJSON.getString("Nombre")
+                        )
+                        listaCategorias.add(categoriaObject)
+                        i++
                     }
+                    if (listaCategorias.isEmpty()) {
+                        CreateGeneralCat()
+                        ShowCats()
+                    } else {
+                        val arrayAdapter = ArrayAdapter(
+                            this,
+                            android.R.layout.simple_spinner_item,
+                            listaCategorias
+                        );
+
+                        spinCat.adapter = arrayAdapter
+                    }
+
                 }
-            } catch (e: java.net.ConnectException) {
-                lblInfo.text = "No se ha podido conectar con el server"
             }
+        } catch (e: java.net.ConnectException) {
+            lblInfo.text = "No se ha podido conectar con el server"
         }
     }
 }

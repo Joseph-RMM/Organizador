@@ -99,12 +99,6 @@
                     android:layout_height="wrap_content"
                     android:text="Agregar" />
 
-                <Button
-                    android:id="@+id/btnAddCategoriaTest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Add Categoria" />
-
             </LinearLayout>
         </ScrollView>
 

@@ -1,6 +1,7 @@
 package com.example.tumbaiorganizer.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.example.tumbaiorganizer.Model.Tarea
 import com.example.tumbaiorganizer.R
 import com.example.tumbaiorganizer.databinding.FragmentHomeBinding
 import com.example.tumbaiorganizer.ui.detailstarea.DetailsTareaFragment
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -130,7 +132,7 @@ class HomeFragment : Fragment() {
 
                     }
 
-                    //if (homeViewModel.listaTareas.size > 0) {
+                    //if (homeViewModel.listaTareas.size == 0) {
                     //Añadir tareas a la lista
                     val lvTareas: ListView = binding.lvTareas
                     val arrayAdapter: ArrayAdapter<*>
