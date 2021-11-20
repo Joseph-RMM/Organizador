@@ -123,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner"
                     android:text="Registrate"
+                    android:textColor="#e7e6e8"
                     app:backgroundTint="#36015c" />
             </LinearLayout>
         </ScrollView>

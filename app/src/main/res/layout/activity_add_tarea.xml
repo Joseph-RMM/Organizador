@@ -42,8 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Nombre de la tarea" />
+                    android:hint="Nombre de la tarea"
+                    android:inputType="textPersonName" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -58,8 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="¿Qué debes hacer?" />
+                    android:hint="¿Qué debes hacer?"
+                    android:inputType="textPersonName" />
 
                 <TextView
                     android:id="@+id/textView21"

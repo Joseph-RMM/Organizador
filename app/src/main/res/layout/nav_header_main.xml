@@ -34,17 +34,12 @@
                 android:id="@+id/lblShowUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="@string/nav_header_title"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <TextView
-                android:id="@+id/lblShowEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_header_subtitle"
-                android:textAlignment="center" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
